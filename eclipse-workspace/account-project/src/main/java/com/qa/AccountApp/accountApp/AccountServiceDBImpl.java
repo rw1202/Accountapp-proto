@@ -10,7 +10,7 @@ import javax.persistence.Query;
 import javax.transaction.Transactional;
 
 @Transactional(SUPPORTS)
-public class AccountServiceDBImpl {
+public class AccountServiceDBImpl implements AccountRepo {
 	@PersistenceContext(unitName="primary")
 	private EntityManager manager;
 	
@@ -29,13 +29,41 @@ public class AccountServiceDBImpl {
 		
 		@Transactional(REQUIRED)
 	
-	public String createAccount(String Account) {
+	public String addAccount(String Account) {
 //		JSONUtil util = new JSONUtil();
 		Account acc1=util.getObjectForJSON (Account, Account.class);
 		manager.persist(acc1);
 		return "{\"message\":\"Account Added\"}";
 	}
 	
-	
-	
-}
+		@Transactional(REQUIRED)
+		public String deleteAccount(Long id) {
+			Account accountInDB = findMovie(id);
+			if (accountInDB != null) {
+				manager.remove(accountInDB);
+			}
+			return "{\"message\": \"movie sucessfully deleted\"}";
+		}
+		
+		public String getAccount(Long id) {
+			Account aMovie =  manager.find(Account.class, id);
+			return util.getJSONForObject(aMovie);
+		}
+
+		private Account findMovie(Long id) {
+			return manager.find(Account.class, id);
+		}
+
+		public void setManager(EntityManager manager) {
+			this.manager = manager;
+		}
+
+		public void setUtil(JSONUtil util) {
+			this.util = util;
+		}
+
+
+
+		
+
+	}

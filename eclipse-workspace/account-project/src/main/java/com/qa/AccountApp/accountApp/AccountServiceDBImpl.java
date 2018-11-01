@@ -9,7 +9,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 
-@Transactional(SUPPORTS)
+@Transactional
 public class AccountServiceDBImpl implements AccountRepo {
 	@PersistenceContext(unitName="primary")
 	private EntityManager manager;
@@ -27,7 +27,7 @@ public class AccountServiceDBImpl implements AccountRepo {
 	
 	}
 		
-		@Transactional(REQUIRED)
+		@Transactional
 	
 	public String addAccount(String Account) {
 //		JSONUtil util = new JSONUtil();
@@ -36,7 +36,7 @@ public class AccountServiceDBImpl implements AccountRepo {
 		return "{\"message\":\"Account Added\"}";
 	}
 	
-		@Transactional(REQUIRED)
+		@Transactional
 		public String deleteAccount(Long id) {
 			Account accountInDB = findMovie(id);
 			if (accountInDB != null) {

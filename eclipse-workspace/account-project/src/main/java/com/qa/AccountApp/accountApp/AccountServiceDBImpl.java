@@ -37,21 +37,36 @@ public class AccountServiceDBImpl implements AccountRepo {
 	}
 	
 		@Transactional
-		public String deleteAccount(Long id) {
-			Account accountInDB = findMovie(id);
+		public String deleteAccount(Long Id) {
+			Account accountInDB = findAccount(Id);
 			if (accountInDB != null) {
 				manager.remove(accountInDB);
 			}
+			
 			return "{\"message\": \"movie sucessfully deleted\"}";
-		}
 		
-		public String getAccount(Long id) {
-			Account aMovie =  manager.find(Account.class, id);
-			return util.getJSONForObject(aMovie);
+		}
+		@Override
+		@Transactional
+		public String updateAccount(Long Id, String Account) {
+			Account acc1=util.getObjectForJSON (Account, Account.class);
+			Account accountInDB=findAccount(Id);
+			accountInDB.setFirstName(acc1.getFirstName());
+			accountInDB.setLastName(acc1.getLastName());
+			accountInDB.setAccountNumber(acc1.getAccountNumber());
+		
+			return "{\"message\":\"Account updated\"}";
+			}
+		
+		
+		
+		public String getAccount(Long Id) {
+			Account acc1 =  manager.find(Account.class, Id);
+			return util.getJSONForObject(acc1);
 		}
 
-		private Account findMovie(Long id) {
-			return manager.find(Account.class, id);
+		private Account findAccount(Long Id) {
+			return manager.find(Account.class, Id);
 		}
 
 		public void setManager(EntityManager manager) {

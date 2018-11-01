@@ -9,7 +9,7 @@ import javax.persistence.PersistenceContext;
 
 import org.json.simple.JSONObject;
 
-@Alternative
+
 
 public class AccountSystem {
 	

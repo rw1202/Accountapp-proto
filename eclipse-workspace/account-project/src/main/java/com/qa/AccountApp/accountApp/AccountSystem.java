@@ -3,6 +3,7 @@ package com.qa.AccountApp.accountApp;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import javax.enterprise.inject.Alternative;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -13,9 +14,10 @@ import org.json.simple.JSONObject;
 public class AccountSystem {
 	
 	
-//	HashMap<Integer, Account> bankAccounts = new HashMap<Integer, Account>();
-//	static int counter = 0;
-//	
+
+	HashMap<Integer, Account> bankAccounts = new HashMap<Integer, Account>();
+	static int counter = 0;
+	
 
 
 	

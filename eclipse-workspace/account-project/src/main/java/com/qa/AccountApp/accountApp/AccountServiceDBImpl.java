@@ -9,8 +9,8 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 
-@Transactional(SUPPORTS)
-public class AccountServiceDBImpl {
+@Transactional
+public class AccountServiceDBImpl implements AccountRepo {
 	@PersistenceContext(unitName="primary")
 	private EntityManager manager;
 	
@@ -27,15 +27,58 @@ public class AccountServiceDBImpl {
 	
 	}
 		
-		@Transactional(REQUIRED)
+		@Transactional
 	
-	public String createAccount(String Account) {
+	public String addAccount(String Account) {
 //		JSONUtil util = new JSONUtil();
 		Account acc1=util.getObjectForJSON (Account, Account.class);
 		manager.persist(acc1);
 		return "{\"message\":\"Account Added\"}";
 	}
 	
-	
-	
-}
+		@Transactional
+		public String deleteAccount(Long Id) {
+			Account accountInDB = findAccount(Id);
+			if (accountInDB != null) {
+				manager.remove(accountInDB);
+			}
+			
+			return "{\"message\": \"movie sucessfully deleted\"}";
+		
+		}
+		@Override
+		@Transactional
+		public String updateAccount(Long Id, String Account) {
+			Account acc1=util.getObjectForJSON (Account, Account.class);
+			Account accountInDB=findAccount(Id);
+			accountInDB.setFirstName(acc1.getFirstName());
+			accountInDB.setLastName(acc1.getLastName());
+			accountInDB.setAccountNumber(acc1.getAccountNumber());
+		
+			return "{\"message\":\"Account updated\"}";
+			}
+		
+		
+		
+		public String getAccount(Long Id) {
+			Account acc1 =  manager.find(Account.class, Id);
+			return util.getJSONForObject(acc1);
+		}
+
+		private Account findAccount(Long Id) {
+			return manager.find(Account.class, Id);
+		}
+
+		public void setManager(EntityManager manager) {
+			this.manager = manager;
+		}
+
+		public void setUtil(JSONUtil util) {
+			this.util = util;
+		}
+
+
+
+		
+
+	}
